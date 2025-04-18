@@ -1,9 +1,7 @@
-import ToolList from "./pages/Tools/List";
-
 function App() {
   return (
     <>
-      <ToolList />
+      <h1 className="text-3xl font-bold underline">Tools</h1>
     </>
   );
 }

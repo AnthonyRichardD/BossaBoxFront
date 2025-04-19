@@ -5,6 +5,7 @@ import { ToolService } from "../../../services/toolService";
 import { CreateToolData } from "../../../types/tool";
 import { useNavigate } from "react-router";
 import { Input } from "../../../components/Form/Input";
+import { useErrorStore } from "../../../stores/errorStore";
 
 const schema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -28,6 +29,7 @@ type FormFields = {
 
 const CreateTool: React.FC = () => {
   const navigate = useNavigate();
+  const showError = useErrorStore((state) => state.showError);
   const {
     register,
     handleSubmit,
@@ -48,7 +50,8 @@ const CreateTool: React.FC = () => {
       console.log(response);
       navigate("/");
     } catch (err) {
-      console.error(err);
+      // showError(err);
+      if (err.response.data.is_error) showError(err.response.data.message);
     }
   };
 

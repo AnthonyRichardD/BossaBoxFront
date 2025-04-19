@@ -3,9 +3,12 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import "./index.css";
 import ToolList from "./pages/Tools/List/index.tsx";
 import CreateTool from "./pages/Tools/Create/index.tsx";
+import { ErrorPopup } from "./components/ErrorPopup.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
+    <ErrorPopup />
+
     <Routes>
       <Route path="/">
         <Route index element={<ToolList />} />

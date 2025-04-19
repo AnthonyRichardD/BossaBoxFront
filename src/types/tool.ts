@@ -12,10 +12,3 @@ export interface CreateToolData {
   description: string;
   tags: string[];
 }
-
-export interface UpdateToolData {
-  title?: string;
-  link?: string;
-  description?: string;
-  tags?: string[];
-}

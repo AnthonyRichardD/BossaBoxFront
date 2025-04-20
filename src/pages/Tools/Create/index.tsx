@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { z } from "zod";
+import { unknown, z } from "zod";
 import { ToolService } from "../../../services/toolService";
 import { CreateToolData } from "../../../types/tool";
 import { useNavigate } from "react-router";
@@ -50,8 +50,11 @@ const CreateTool: React.FC = () => {
       console.log(response);
       navigate("/");
     } catch (err) {
-      // showError(err);
-      if (err.response.data.is_error) showError(err.response.data.message);
+      if (err.response.data.is_error) {
+        showError(err.response.data.message);
+      } else {
+        showError("Erro no servidor, tente novamente mais tarde.");
+      }
     }
   };
 
@@ -101,15 +104,25 @@ const CreateTool: React.FC = () => {
             error={errors.tags}
           />
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="mt-2 rounded-lg bg-purple-600 px-4 py-2 text-xl font-medium text-white transition-all hover:bg-purple-700 hover:shadow-lg focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900 focus:outline-none"
-          >
-            {isSubmitting
-              ? "Cadastrando ferramenta..."
-              : "Cadastrar Ferramenta"}
-          </button>
+          <div className="flex items-center justify-between">
+            <button
+              className="mt-2 cursor-pointer rounded-lg border border-gray-600 px-4 py-2 text-lg font-medium text-white transition-all hover:border-blue-500 hover:text-blue-500 hover:shadow-lg focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900 focus:outline-none"
+              type="button"
+              onClick={() => navigate(-1)}
+            >
+              Voltar
+            </button>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="mt-2 cursor-pointer rounded-lg bg-purple-600 px-4 py-2 text-lg font-medium text-white transition-all hover:bg-purple-700 hover:shadow-lg focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900 focus:outline-none"
+            >
+              {isSubmitting
+                ? "Cadastrando ferramenta..."
+                : "Cadastrar Ferramenta"}
+            </button>
+          </div>
         </form>
       </div>
     </>

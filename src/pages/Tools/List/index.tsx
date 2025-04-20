@@ -3,11 +3,40 @@ import { useEffect, useState } from "react";
 import { ToolService } from "../../../services/toolService";
 import type { Tool } from "../../../types/tool";
 import { useNavigate } from "react-router";
+import { ConfirmationModal } from "../../../components/ConfirmationModal";
+import { toast } from "react-toastify";
 
 const ToolList: React.FC = () => {
   const [tools, setTools] = useState<Tool[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedToolId, setSelectedToolId] = useState<string | null>(null);
+
+  const handleClose = () => {
+    setIsDeleteModalOpen(false);
+    setSelectedToolId(null);
+  };
+
+  const handleDeleteTool = (toolId: string) => {
+    setSelectedToolId(toolId);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirm = async () => {
+    if (selectedToolId) {
+      try {
+        await ToolService.deleteTool(selectedToolId);
+        setTools(tools.filter((tool) => tool.id !== selectedToolId));
+        handleClose();
+        toast.success("Ferramenta deletada com sucesso!");
+      } catch (err) {
+        setError("Failed to delete tool");
+        console.error(err);
+      }
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -106,18 +135,18 @@ const ToolList: React.FC = () => {
               Nenhuma ferramenta encontrada
             </p>
             <button
-              onClick={() => navigate("/tools/create")}
+              onClick={() => navigate("/create")}
               className="mt-4 rounded-md bg-purple-600 px-4 py-2 text-white hover:bg-purple-700"
             >
               Adicionar primeira ferramenta
             </button>
           </div>
         ) : (
-          <div className="overflow-hidden rounded-lg border border-gray-800 bg-gray-900 shadow-xl">
-            <div className="overflow-x-auto">
+          <div className="relative max-h-[85dvh] overflow-y-auto rounded-lg border border-gray-800 bg-gray-900 shadow-xl">
+            <div>
               <table className="min-w-full divide-y divide-gray-800">
-                <thead>
-                  <tr className="bg-gray-800/80">
+                <thead className="sticky top-0">
+                  <tr className="bg-gray-800">
                     <th className="px-6 py-4 text-left text-xs font-semibold tracking-wider text-gray-300 uppercase">
                       Título
                     </th>
@@ -194,7 +223,10 @@ const ToolList: React.FC = () => {
                           <button className="rounded bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-900 focus:outline-none">
                             Editar
                           </button>
-                          <button className="rounded bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-900 focus:outline-none">
+                          <button
+                            onClick={() => handleDeleteTool(tool.id)}
+                            className="rounded bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-900 focus:outline-none"
+                          >
                             Excluir
                           </button>
                         </div>
@@ -207,6 +239,15 @@ const ToolList: React.FC = () => {
           </div>
         )}
       </div>
+
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleClose}
+        onConfirm={handleConfirm}
+        title="Excluir ferramenta"
+        message="Tem certeza que deseja excluir essa ferramenta? Essa ação é irreversível."
+        confirmText="Excluir"
+      />
     </div>
   );
 };

@@ -24,7 +24,7 @@ export const ErrorPopup = () => {
         isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
       }`}
     >
-      <div className="absolute top-1/2 left-1/2 w-full max-w-md -translate-x-1/2 -translate-y-1/2">
+      <div className="absolute top-1/2 left-1/2 w-full max-w-sm -translate-x-1/2 -translate-y-1/2">
         <div className="flex h-60 max-w-md flex-col items-center justify-center gap-3 rounded-lg bg-gray-800 p-4 text-white shadow-lg">
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -13,4 +13,11 @@ export const ToolService = {
     const response = await api.post("/tools", tool);
     return response.data;
   },
+
+  async deleteTool(
+    toolId: string,
+  ): Promise<{ response: Tool; is_error: string }> {
+    const response = await api.delete(`/tools/${toolId}`);
+    return response.data;
+  },
 };

@@ -47,7 +47,6 @@ const CreateTool: React.FC = () => {
 
     try {
       const response = await ToolService.createTool(createToolData);
-      console.log(response);
       navigate("/");
     } catch (err) {
       if (err.response.data.is_error) {

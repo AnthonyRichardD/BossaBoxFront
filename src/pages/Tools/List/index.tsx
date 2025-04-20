@@ -33,7 +33,6 @@ const ToolList: React.FC = () => {
         toast.success("Ferramenta deletada com sucesso!");
       } catch (err) {
         setError("Failed to delete tool");
-        console.error(err);
       }
     }
   };
@@ -48,7 +47,6 @@ const ToolList: React.FC = () => {
         setTools(data.response);
       } catch (err) {
         setError("Failed to fetch tools");
-        console.error(err);
       } finally {
         setLoading(false);
       }

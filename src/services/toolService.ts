@@ -20,4 +20,12 @@ export const ToolService = {
     const response = await api.delete(`/tools/${toolId}`);
     return response.data;
   },
+
+  async updateTool(
+    toolId: string,
+    tool: CreateToolData,
+  ): Promise<{ response: Tool; is_error: string }> {
+    const response = await api.patch(`/tools/${toolId}`, tool);
+    return response.data;
+  },
 };

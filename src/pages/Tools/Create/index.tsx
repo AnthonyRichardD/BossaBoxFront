@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { unknown, z } from "zod";
+import { z } from "zod";
 import { ToolService } from "../../../services/toolService";
 import { CreateToolData } from "../../../types/tool";
 import { useNavigate } from "react-router";
@@ -46,7 +46,7 @@ const CreateTool: React.FC = () => {
     };
 
     try {
-      const response = await ToolService.createTool(createToolData);
+      await ToolService.createTool(createToolData);
       navigate("/");
     } catch (err) {
       if (err.response.data.is_error) {

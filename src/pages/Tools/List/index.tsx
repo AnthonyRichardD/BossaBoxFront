@@ -5,6 +5,7 @@ import type { Tool } from "../../../types/tool";
 import { useNavigate } from "react-router";
 import { ConfirmationModal } from "../../../components/ConfirmationModal";
 import { toast } from "react-toastify";
+import { useUpdateToolStore } from "../../../stores/updateToolStore";
 
 const ToolList: React.FC = () => {
   const [tools, setTools] = useState<Tool[]>([]);
@@ -14,6 +15,10 @@ const ToolList: React.FC = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedToolId, setSelectedToolId] = useState<string | null>(null);
 
+  const handleEditTool = (tool: Tool) => {
+    useUpdateToolStore.getState().setTool(tool);
+    navigate(`/edit/${tool.id}`);
+  };
   const handleClose = () => {
     setIsDeleteModalOpen(false);
     setSelectedToolId(null);
@@ -218,7 +223,10 @@ const ToolList: React.FC = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex space-x-2">
-                          <button className="rounded bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-900 focus:outline-none">
+                          <button
+                            onClick={() => handleEditTool(tool)}
+                            className="rounded bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-900 focus:outline-none"
+                          >
                             Editar
                           </button>
                           <button
